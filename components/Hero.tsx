@@ -19,11 +19,13 @@ export default function Hero() {
       </div>
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-24 text-white">
         {brand.logoUrl && (
-          <img
-            src={brand.logoUrl}
-            alt={brand.name}
-            className="h-14 w-auto mb-8 object-contain brightness-0 invert"
-          />
+          <div data-demo-img="brand-logo" data-demo-img-label="Business logo">
+            <img
+              src={brand.logoUrl}
+              alt={brand.name}
+              className="h-14 w-auto mb-8 object-contain brightness-0 invert"
+            />
+          </div>
         )}
         <p
           data-demo-edit="hero-location"

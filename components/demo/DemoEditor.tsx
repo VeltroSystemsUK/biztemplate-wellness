@@ -272,15 +272,15 @@ function applyTexts(texts: Record<string, string>) {
 }
 
 function swapImage(key: string, src: string) {
-  const container = document.querySelector<HTMLElement>(
-    `[data-demo-img="${key}"]`,
-  );
-  if (!container) return;
-  const img = container.querySelector("img") as HTMLImageElement | null;
-  if (!img) return;
-  img.src = src;
-  img.srcset = "";
-  img.sizes = "";
+  document
+    .querySelectorAll<HTMLElement>(`[data-demo-img="${key}"]`)
+    .forEach((container) => {
+      const img = container.querySelector("img") as HTMLImageElement | null;
+      if (!img) return;
+      img.src = src;
+      img.srcset = "";
+      img.sizes = "";
+    });
 }
 
 function applyImages(images: Record<string, string>) {

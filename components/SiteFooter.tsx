@@ -9,13 +9,21 @@ export default function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           <div>
             {brand.logoUrl ? (
-              <img
-                src={brand.logoUrl}
-                alt={brand.name}
-                className="h-10 w-auto mb-4 brightness-0 invert"
-              />
+              <div
+                data-demo-img="brand-logo"
+                data-demo-img-label="Business logo"
+              >
+                <img
+                  src={brand.logoUrl}
+                  alt={brand.name}
+                  className="h-10 w-auto mb-4 brightness-0 invert"
+                />
+              </div>
             ) : (
-              <h3 className="font-display font-black text-2xl mb-4">
+              <h3
+                data-demo-edit="footer-name"
+                className="font-display font-black text-2xl mb-4"
+              >
                 {brand.name}
               </h3>
             )}
