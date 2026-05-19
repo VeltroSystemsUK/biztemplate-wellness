@@ -4,29 +4,29 @@
   --font-display: var(--font-display-loaded), Georgia, serif;
   --font-sans: var(--font-sans-loaded), system-ui, sans-serif;
 
-  --color-primary-50: #f7f3f0;
-  --color-primary-100: #ede4dd;
-  --color-primary-200: #dcc9bb;
-  --color-primary-300: #c8a993;
-  --color-primary-400: #b58b6e;
-  --color-primary-500: #a0714f;
-  --color-primary-600: #875c3e;
-  --color-primary-700: #6d4832;
-  --color-primary-800: #543828;
-  --color-primary-900: #3d2a1e;
-  --color-primary-950: #271a12;
+  --color-primary-50: #f9f4f4;
+  --color-primary-100: #f0e6e6;
+  --color-primary-200: #e2cfcf;
+  --color-primary-300: #cface;
+  --color-primary-400: #c49898;
+  --color-primary-500: #b07d7d;
+  --color-primary-600: #976464;
+  --color-primary-700: #7d4e4e;
+  --color-primary-800: #623c3c;
+  --color-primary-900: #4a2d2d;
+  --color-primary-950: #2e1a1a;
 
-  --color-accent-50: #fdf8ee;
-  --color-accent-100: #f9eecc;
-  --color-accent-200: #f2da96;
-  --color-accent-300: #e9c15a;
-  --color-accent-400: #dea72e;
+  --color-accent-50: #fdf8ec;
+  --color-accent-100: #f9eece;
+  --color-accent-200: #f2dba0;
+  --color-accent-300: #e9c36a;
+  --color-accent-400: #dea93e;
   --color-accent-500: #b8860b;
-  --color-accent-600: #9a6e09;
-  --color-accent-700: #7b560a;
-  --color-accent-800: #5e420c;
-  --color-accent-900: #42300b;
-  --color-accent-950: #261c06;
+  --color-accent-600: #9a6e08;
+  --color-accent-700: #7c5706;
+  --color-accent-800: #5e4105;
+  --color-accent-900: #422e03;
+  --color-accent-950: #261a01;
 
   --color-cream: #fafaf8;
   --color-cream-dark: #f0ede6;
@@ -50,8 +50,8 @@ body {
 .gradient-hero {
   background: linear-gradient(
     160deg,
-    rgba(84, 56, 40, 0.92) 0%,
-    rgba(109, 72, 50, 0.74) 50%,
+    rgba(98, 60, 60, 0.92) 0%,
+    rgba(125, 78, 78, 0.74) 50%,
     rgba(184, 134, 11, 0.38) 100%
   );
 }
@@ -60,8 +60,8 @@ body {
 }
 .card-hover:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px -8px rgba(109, 72, 50, 0.18);
+  box-shadow: 0 12px 40px -8px rgba(125, 78, 78, 0.18);
 }
-:focus-visible { outline: 2px solid #6d4832; outline-offset: 2px; }
+:focus-visible { outline: 2px solid #7d4e4e; outline-offset: 2px; }
 .section-pad { padding-top: 5rem; padding-bottom: 5rem; }
 @media (max-width: 768px) { .section-pad { padding-top: 3rem; padding-bottom: 3rem; } }
