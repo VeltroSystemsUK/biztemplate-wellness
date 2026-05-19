@@ -4,29 +4,29 @@
   --font-display: var(--font-display-loaded), Georgia, serif;
   --font-sans: var(--font-sans-loaded), system-ui, sans-serif;
 
-  --color-primary-50: #f7f2f2;
-  --color-primary-100: #ede1e1;
-  --color-primary-200: #dcc5c5;
-  --color-primary-300: #c9a4a4;
-  --color-primary-400: #b88585;
+  --color-primary-50: #f9f4f4;
+  --color-primary-100: #f0e6e6;
+  --color-primary-200: #e2cecd;
+  --color-primary-300: #d0aead;
+  --color-primary-400: #be8e8c;
   --color-primary-500: #b07d7d;
-  --color-primary-600: #956060;
-  --color-primary-700: #7a4b4b;
-  --color-primary-800: #5e3939;
-  --color-primary-900: #432929;
-  --color-primary-950: #2a1818;
+  --color-primary-600: #956161;
+  --color-primary-700: #7a4c4c;
+  --color-primary-800: #613c3c;
+  --color-primary-900: #4e3030;
+  --color-primary-950: #2e1a1a;
 
   --color-accent-50: #fdf8ec;
-  --color-accent-100: #f9edce;
-  --color-accent-200: #f2d99d;
-  --color-accent-300: #e8c164;
-  --color-accent-400: #d4a832;
+  --color-accent-100: #f9edcc;
+  --color-accent-200: #f2d98a;
+  --color-accent-300: #e8c14a;
+  --color-accent-400: #d4a81f;
   --color-accent-500: #b8860b;
   --color-accent-600: #9a6e08;
-  --color-accent-700: #7b5507;
-  --color-accent-800: #5c3f06;
-  --color-accent-900: #3d2a04;
-  --color-accent-950: #211602;
+  --color-accent-700: #7a5507;
+  --color-accent-800: #604209;
+  --color-accent-900: #4d350c;
+  --color-accent-950: #2c1d04;
 
   --color-cream: #fafaf8;
   --color-cream-dark: #f0ede6;
@@ -50,8 +50,8 @@ body {
 .gradient-hero {
   background: linear-gradient(
     160deg,
-    rgba(94, 57, 57, 0.92) 0%,
-    rgba(122, 75, 75, 0.74) 50%,
+    rgba(97, 60, 60, 0.92) 0%,
+    rgba(122, 76, 76, 0.74) 50%,
     rgba(184, 134, 11, 0.38) 100%
   );
 }
@@ -60,8 +60,8 @@ body {
 }
 .card-hover:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px -8px rgba(122, 75, 75, 0.18);
+  box-shadow: 0 12px 40px -8px rgba(122, 76, 76, 0.18);
 }
-:focus-visible { outline: 2px solid #7a4b4b; outline-offset: 2px; }
+:focus-visible { outline: 2px solid #7a4c4c; outline-offset: 2px; }
 .section-pad { padding-top: 5rem; padding-bottom: 5rem; }
 @media (max-width: 768px) { .section-pad { padding-top: 3rem; padding-bottom: 3rem; } }
