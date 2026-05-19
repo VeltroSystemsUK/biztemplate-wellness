@@ -1,44 +1,93 @@
+"use client";
+
+import { useState, useRef } from "react";
+import staticConfig from "@/site.config";
+
 export default function BeforeAfterGallery() {
-  const pairs = [1, 2, 3, 4];
+  const galleryData = staticConfig.widgets?.gallery;
+
+  // Hooks unconditionally before any early return
+  const [sliderPos, setSliderPos] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  if (!galleryData?.enabled) return null;
+
+  const handleMove = (clientX: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const pct = Math.max(
+      0,
+      Math.min(100, ((clientX - rect.left) / rect.width) * 100),
+    );
+    setSliderPos(pct);
+  };
+
   return (
-    <section className="section-pad bg-cream">
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="text-center mb-14">
-          <p className="text-accent-600 font-semibold text-sm uppercase tracking-widest mb-3">
+    <section className="section-pad bg-primary-950">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-10">
+          <p className="text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3">
             Our Work
           </p>
-          <h2 className="font-display font-black text-4xl md:text-5xl text-primary-900">
-            Before & After
+          <h2 className="font-display font-black text-4xl md:text-5xl text-white">
+            The Difference We Make
           </h2>
-          <p className="text-primary-700/70 mt-4 max-w-lg mx-auto">
-            Real jobs. Real results. See the difference a professional makes.
-          </p>
+          <p className="text-white/40 text-sm mt-3">Drag to compare</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {pairs.map((i) => (
-            <div key={i} className="space-y-2">
-              <div className="relative aspect-square rounded-xl overflow-hidden bg-primary-100 flex items-center justify-center">
-                <span className="text-primary-400 text-xs font-medium">
-                  Before {i}
-                </span>
-                <span className="absolute top-2 left-2 bg-primary-900/80 text-white text-xs px-2 py-0.5 rounded-full">
-                  Before
-                </span>
-              </div>
-              <div className="relative aspect-square rounded-xl overflow-hidden bg-accent-50 flex items-center justify-center">
-                <span className="text-accent-400 text-xs font-medium">
-                  After {i}
-                </span>
-                <span className="absolute top-2 left-2 bg-accent-500 text-white text-xs px-2 py-0.5 rounded-full">
-                  After
-                </span>
-              </div>
-            </div>
-          ))}
+
+        <div
+          ref={containerRef}
+          onMouseMove={(e) => isDragging && handleMove(e.clientX)}
+          onMouseDown={() => setIsDragging(true)}
+          onMouseUp={() => setIsDragging(false)}
+          onMouseLeave={() => setIsDragging(false)}
+          onTouchMove={(e) => handleMove(e.touches[0].clientX)}
+          onTouchStart={() => setIsDragging(true)}
+          onTouchEnd={() => setIsDragging(false)}
+          className="relative h-[480px] rounded-2xl overflow-hidden cursor-ew-resize select-none border border-white/10 shadow-2xl"
+        >
+          {/* After image — full-width base layer */}
+          <img
+            src={galleryData.afterUrl}
+            alt="After"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          />
+          <span className="absolute bottom-4 right-4 z-10 bg-black/70 backdrop-blur-sm text-accent-400 text-xs font-bold px-3 py-1.5 rounded-lg border border-accent-400/30">
+            AFTER
+          </span>
+
+          {/* Before image — clipped via clipPath, same full dimensions as after */}
+          <img
+            src={galleryData.beforeUrl}
+            alt="Before"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+            style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
+          />
+          <span
+            className="absolute bottom-4 left-4 z-10 bg-black/70 backdrop-blur-sm text-white/80 text-xs font-bold px-3 py-1.5 rounded-lg border border-white/20"
+            style={{
+              opacity: sliderPos > 10 ? 1 : 0,
+              transition: "opacity 0.2s",
+            }}
+          >
+            BEFORE
+          </span>
+
+          {/* Divider line */}
+          <div
+            className="absolute inset-y-0 w-px bg-accent-400/70 z-20 pointer-events-none"
+            style={{ left: `${sliderPos}%` }}
+          />
+
+          {/* Drag handle */}
+          <div
+            className="absolute top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-primary-950 border-2 border-accent-400 rounded-full flex items-center justify-center text-accent-400 text-sm font-bold shadow-xl pointer-events-none"
+            style={{ left: `${sliderPos}%` }}
+          >
+            ↔
+          </div>
         </div>
-        <p className="text-center text-primary-400 text-sm mt-8">
-          Photos of completed work — updated regularly
-        </p>
       </div>
     </section>
   );
