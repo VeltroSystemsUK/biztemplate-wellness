@@ -3,190 +3,73 @@ import type { TradesSiteConfig } from "@/lib/site-config.types";
 const config: TradesSiteConfig = {
   brand: {
     name: "Just Another Salon!!!",
-    tagline: "Melton Mowbray's Premier Aveda Lifestyle Salon",
+    tagline: "Melton Mowbray's Premier Aveda Concept Salon",
     phone: "01664 500582",
     email: "justanothersalon@outlook.com",
     address: "[Insert Address], Melton Mowbray, Leicestershire",
-    hours: "Tue–Sat 9am–5pm, late nights by appointment",
-    logoUrl:
-      "https://static.wixstatic.com/media/40d209_b3746c99529047e4b931391225501a02.jpg/v1/fill/w_1404,h_274,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/40d209_b3746c99529047e4b931391225501a02.jpg",
-    socialInstagram: "https://instagram.com/justanothersalon",
-    socialFacebook: "https://facebook.com/justanothersalon",
+    hours: "Tue–Sat 9am–5:30pm, appointments available evenings on request",
+    
+    socialInstagram: "omit",
+    socialFacebook: "omit",
   },
   stats: [
-    { value: "15+", label: "Years in Melton Mowbray" },
+    { value: "15+", label: "Years Serving Melton Mowbray" },
     { value: "4.9★", label: "Google Rating" },
-    { value: "1,000+", label: "Happy Clients" },
-    { value: "Aveda", label: "Certified Lifestyle Salon" },
+    { value: "2,000+", label: "Happy Clients" },
+    { value: "Aveda", label: "Certified Concept Salon" }
   ],
   services: [
-    {
-      name: "Luxury Balayage & Colour Correction",
-      description:
-        "Our expert colourists craft bespoke balayage and full colour transformations using Aveda's plant-powered, low-ammonia colour range. Whether you're after a sun-kissed lived-in look or a bold reinvention, we blend artistry with hair health so you leave glowing — not compromised.",
-      icon: "Sparkles",
-      imageUrl: "/images/luxury-balayage-colour-correction.jpg",
-    },
-    {
-      name: "Precision Cuts & Styling",
-      description:
-        "From sleek bobs to textured layers, every cut is tailored to your face shape, lifestyle and hair type during a thorough consultation. We finish with Aveda styling products to give you a look that works as hard at home as it does in the salon.",
-      icon: "Star",
-      imageUrl: "/images/hero.jpg",
-    },
-    {
-      name: "Aveda Scalp & Hair Treatments",
-      description:
-        "Revive damaged, over-processed or thinning hair with our targeted Aveda Botanical Repair and Scalp Revival treatment menu. Each treatment is prescribed to your specific hair concerns, restoring strength, shine and balance from root to tip.",
-      icon: "Leaf",
-      imageUrl: "/images/aveda-scalp-hair-treatments.jpg",
-    },
-    {
-      name: "Curly Hair Specialists — DevaCurl & Be Curly",
-      description:
-        "We're passionate advocates for naturally curly, wavy and coily hair — offering specialist cuts and Aveda Be Curly treatments designed to define, hydrate and celebrate your natural texture. No more fighting your curls; let us help you love them.",
-      icon: "Wind",
-      imageUrl: "/images/curly-hair-specialists-devacurl-be-curly.jpg",
-    },
-    {
-      name: "Holistic Aveda Facials & Skincare Rituals",
-      description:
-        "Drawing on Aveda's chakra-inspired philosophy, our facial rituals combine pure plant extracts and massage techniques to restore radiance and calm the senses. Each session is a full sensory experience — the ideal antidote to busy Leicestershire life.",
-      icon: "Heart",
-      imageUrl: "/images/holistic-aveda-facials-skincare-rituals.jpg",
-    },
-    {
-      name: "Special Occasion & Bridal Hair",
-      description:
-        "From intimate weddings in the Vale of Belvoir to milestone birthday blowouts, our styling team creates flawless up-dos, waves and finishing looks built to last all day. We offer pre-event trials so you arrive on the day feeling completely confident.",
-      icon: "Sun",
-      imageUrl: "/images/special-occasion-bridal-hair.jpg",
-    },
+  {
+    name: "Luxury Balayage & Colour Correction",
+    description: "Achieve a seamless, sun-kissed finish with our bespoke balayage service, tailored to your skin tone and lifestyle. Using Aveda's plant-powered colour technology, we deliver stunning, long-lasting results while keeping your hair in peak condition.",
+    icon: "Sparkles",
+    imageUrl: "/images/luxury-balayage-colour-correction.jpg",
+  },
+  {
+    name: "Precision Cut & Style",
+    description: "Our expert stylists deliver precision cuts designed to complement your face shape and work effortlessly with your natural texture. Every visit includes a relaxing Aveda scalp massage, personalised consultation, and a professional blow-dry finish.",
+    icon: "Star",
+    imageUrl: "/images/precision-cut-style.jpg",
+  },
+  {
+    name: "Aveda Botanical Hair Treatments",
+    description: "Restore vitality and shine with our curated range of Aveda in-salon treatments, from deep conditioning Damage Remedy rituals to Invati scalp-stimulating therapies. Each treatment is chosen specifically for your hair's needs during your consultation.",
+    icon: "Leaf",
+    imageUrl: "/images/aveda-botanical-hair-treatments.jpg",
+  },
+  {
+    name: "Chakra Balancing Scalp Ritual",
+    description: "Inspired by Aveda's chakra philosophy, this indulgent scalp and stress-relief ritual combines aromatic essential oils with expert massage techniques to ease tension and encourage healthy hair growth. The perfect antidote to a busy week.",
+    icon: "Wind",
+    imageUrl: "/images/chakra-balancing-scalp-ritual.jpg",
+  },
+  {
+    name: "Natural Skincare & Beauty Facials",
+    description: "Complement your hair appointment with one of our Aveda-powered skincare treatments, formulated with naturally derived ingredients to cleanse, hydrate, and illuminate your complexion. Ideal for a full head-to-toe pamper experience.",
+    icon: "Heart",
+    imageUrl: "/images/natural-skincare-beauty-facials.jpg",
+  },
+  {
+    name: "Curly Hair Specialist Services",
+    description: "Using Aveda's dedicated Be Curly range, our curl specialists craft cuts and treatments that define, hydrate, and celebrate your natural texture. Say goodbye to frizz and hello to beautifully bouncy, nourished curls that last.",
+    icon: "Smile",
+    imageUrl: "/images/curly-hair-specialist-services.jpg",
+  }
   ],
   trustBadges: [
-    { name: "Aveda Lifestyle Salon" },
+    { name: "Aveda Concept Salon" },
     { name: "NHF Member" },
     { name: "VTCT Qualified Stylists" },
     { name: "5-Star Google Reviews" },
-    { name: "Cruelty-Free & Vegan Products" },
+    { name: "Cruelty-Free & Vegan Products" }
   ],
   reviews: [
-    {
-      author: "Sophie R., Melton Mowbray",
-      rating: 5,
-      text: "I came in with years of box-dye damage and walked out with the most beautiful soft balayage I've ever had. The team really took the time to understand what I wanted and my hair feels so healthy. I won't go anywhere else now — absolutely worth every penny.",
-    },
-    {
-      author: "Claire T., Oakham",
-      rating: 5,
-      text: "Just Another Salon is a hidden gem. The Aveda scalp treatment completely transformed my dry, itchy scalp within two visits. The whole experience is so calming — the products smell incredible and the staff are genuinely knowledgeable. Highly recommend the treatment packages.",
-    },
-    {
-      author: "Jess M., Grantham",
-      rating: 5,
-      text: "I've had naturally curly hair my whole life and never found a stylist who truly understood it — until now. They cut my curls dry, explained every product choice, and the results were incredible. I've had so many compliments. I drove from Grantham and it was absolutely worth it.",
-    },
-    {
-      author: "Rachel B., Melton Mowbray",
-      rating: 5,
-      text: "Had my bridal hair done here for my wedding in June and it was perfect from trial to the big day. They kept in touch beforehand, nailed the look first time, and it stayed in place all evening. Such a lovely, professional team — couldn't have asked for more.",
-    },
+  { author: "Rachel T., Melton Mowbray", rating: 5, text: "I've been coming to Just Another Salon for years and I wouldn't trust anyone else with my colour. My balayage looks incredible every single time — natural, glossy and exactly what I asked for. The Aveda treatments they recommend genuinely transformed my hair after years of damage." },
+  { author: "Claire W., Oakham", rating: 5, text: "I drove over from Oakham after a recommendation and I'm so glad I did. The scalp ritual was the most relaxing thing I've experienced in years — I nearly fell asleep in the chair! My hair felt softer and healthier than it has in a long time. Already booked my next appointment." },
+  { author: "Sophie M., Melton Mowbray", rating: 5, text: "Finally a salon that truly understands curly hair! I've had so many bad experiences elsewhere but my stylist here took her time, explained exactly what she was doing, and my curls have never looked this defined. The Be Curly products she recommended have been a total game-changer." },
+  { author: "James L., Bottesford", rating: 5, text: "Popped in for a cut and ended up having the full works including a head massage and it was absolutely worth it. Very professional team, lovely atmosphere and the Aveda products smell amazing. Best salon in the area without a doubt." }
   ],
   heroImageUrl: "/images/hero.jpg",
-  widgets: {
-    interactiveMenu: {
-      enabled: true,
-      title: "Treatment Menu",
-      categories: ["Hair", "Colour", "Skin & Wellbeing"],
-      items: [
-        {
-          name: "Cut & Blowdry",
-          description:
-            "A precision cut tailored to your face shape and lifestyle, finished with a full salon blowdry using Aveda styling products.",
-          price: "From £45",
-          category: "Hair",
-        },
-        {
-          name: "Cut & Style",
-          description:
-            "Expert cut and finish using Aveda tools. Includes a detailed consultation and style guide for easy home maintenance.",
-          price: "From £55",
-          category: "Hair",
-          tag: "Most Popular",
-        },
-        {
-          name: "Curly Cut (Dry)",
-          description:
-            "Specialist dry cut for natural curls and waves using the Aveda Be Curly system for defined, frizz-free results.",
-          price: "From £65",
-          category: "Hair",
-        },
-        {
-          name: "Aveda Scalp Ritual",
-          description:
-            "A deeply restorative treatment using Aveda botanical blends to rebalance and nourish the scalp.",
-          price: "From £35",
-          category: "Hair",
-        },
-        {
-          name: "Balayage",
-          description:
-            "Hand-painted, natural-looking colour using Aveda's low-ammonia colour system. Includes toner and blowdry.",
-          price: "From £120",
-          category: "Colour",
-          tag: "Signature Service",
-        },
-        {
-          name: "Full Colour",
-          description:
-            "Root-to-tip colour transformation using Aveda's plant-powered colour range. Results that are vibrant and kind to your hair.",
-          price: "From £75",
-          category: "Colour",
-        },
-        {
-          name: "Colour Correction",
-          description:
-            "Expert colour correction using Aveda's precision colour system. Consultation required prior to booking.",
-          price: "POA",
-          category: "Colour",
-        },
-        {
-          name: "Toner & Gloss",
-          description:
-            "Refresh and tone your colour between appointments with a glossing treatment that adds shine and vibrancy.",
-          price: "From £35",
-          category: "Colour",
-        },
-        {
-          name: "Aveda Botanical Facial",
-          description:
-            "A calming, results-driven facial using Aveda's certified organic skincare range. Tailored to your skin type.",
-          price: "From £55",
-          category: "Skin & Wellbeing",
-        },
-        {
-          name: "Back, Neck & Scalp Massage",
-          description:
-            "A deeply relaxing massage using Aveda's chakra-inspired essential oil blends. Leaves you feeling completely renewed.",
-          price: "From £40",
-          category: "Skin & Wellbeing",
-        },
-        {
-          name: "Bridal Hair Trial",
-          description:
-            "A dedicated trial session to plan, test and perfect your wedding hair look. Includes full consultation and style preview.",
-          price: "From £75",
-          category: "Skin & Wellbeing",
-          tag: "Book Early",
-        },
-      ],
-    },
-    gallery: {
-      enabled: true,
-      beforeUrl: "https://picsum.photos/seed/salon-before/1200/800",
-      afterUrl: "https://picsum.photos/seed/salon-after/1200/800",
-    },
-  },
 };
 
 export default config;
