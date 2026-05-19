@@ -4,7 +4,11 @@ import { Phone } from "lucide-react";
 export default function Hero() {
   const { brand, heroImageUrl } = config;
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+    <section
+      className="relative min-h-[90vh] flex items-center overflow-hidden"
+      data-demo-img="hero"
+      data-demo-img-label="Hero background"
+    >
       <div className="absolute inset-0 z-0">
         <img
           src={heroImageUrl}
@@ -24,10 +28,18 @@ export default function Hero() {
         <p className="text-accent-400 font-display font-bold text-sm uppercase tracking-widest mb-4">
           {brand.address.split(",").slice(-2).join(",").trim()}
         </p>
-        <h1 className="font-display font-black text-5xl md:text-7xl leading-none mb-6 text-balance">
+        <h1
+          data-demo-edit="hero-tagline"
+          className="font-display font-black text-5xl md:text-7xl leading-none mb-6 text-balance"
+        >
           {brand.tagline}
         </h1>
-        <p className="text-white/80 text-xl max-w-xl mb-10">{brand.hours}</p>
+        <p
+          data-demo-edit="hero-hours"
+          className="text-white/80 text-xl max-w-xl mb-10"
+        >
+          {brand.hours}
+        </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <a
             href={`tel:${brand.phone.replace(/\s/g, "")}`}

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat, Inter } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import config from "@/site.config";
+import DemoEditor from "@/components/demo/DemoEditor";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -23,7 +25,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Suspense fallback={null}>
+          <DemoEditor />
+        </Suspense>
+      </body>
     </html>
   );
 }
