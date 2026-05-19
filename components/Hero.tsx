@@ -48,7 +48,7 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-4">
           <a
             href={`tel:${brand.phone.replace(/\s/g, "")}`}
-            className="inline-flex items-center gap-3 bg-accent-500 hover:bg-accent-600 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors"
+            className="cta-pulse inline-flex items-center gap-3 bg-accent-500 hover:bg-accent-600 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors"
           >
             <Phone className="w-5 h-5" />
             <span data-demo-edit="hero-phone">{brand.phone}</span>

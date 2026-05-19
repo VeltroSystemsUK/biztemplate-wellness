@@ -26,7 +26,7 @@ export default function BeforeAfterGallery() {
   return (
     <section className="section-pad bg-primary-950">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-10">
+        <div className="reveal text-center mb-10">
           <p
             data-demo-edit="gallery-label"
             className="text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3"

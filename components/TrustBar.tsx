@@ -6,7 +6,7 @@ export default function TrustBar() {
   return (
     <section className="bg-primary-900 text-white py-8">
       <div className="max-w-5xl mx-auto px-6">
-        <div className="flex flex-wrap items-center justify-between gap-6">
+        <div className="reveal flex flex-wrap items-center justify-between gap-6">
           <div className="flex flex-wrap gap-x-8 gap-y-4">
             {stats.map((s) => (
               <div key={s.label} className="text-center">

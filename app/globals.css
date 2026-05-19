@@ -37,15 +37,21 @@
   --radius-xl: 1.5rem;
 }
 
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
 body {
   font-family: var(--font-sans);
   background-color: #fafaf8;
   color: #1a1a1a;
   -webkit-font-smoothing: antialiased;
 }
-.font-display { font-family: var(--font-display); }
+.font-display {
+  font-family: var(--font-display);
+}
 
 .gradient-hero {
   background: linear-gradient(
@@ -56,12 +62,70 @@ body {
   );
 }
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
 }
 .card-hover:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px -8px rgba(125, 78, 78, 0.18);
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 60px -10px
+      color-mix(in srgb, var(--color-primary-800) 28%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-accent-400) 22%, transparent);
 }
-:focus-visible { outline: 2px solid #7d4e4e; outline-offset: 2px; }
-.section-pad { padding-top: 5rem; padding-bottom: 5rem; }
-@media (max-width: 768px) { .section-pad { padding-top: 3rem; padding-bottom: 3rem; } }
+:focus-visible {
+  outline: 2px solid #7d4e4e;
+  outline-offset: 2px;
+}
+.section-pad {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+@media (max-width: 768px) {
+  .section-pad {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+/* ─── Scroll-driven entrance animations ─── */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cta-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0
+      color-mix(in srgb, var(--color-accent-500) 55%, transparent);
+  }
+  60% {
+    box-shadow: 0 0 0 16px
+      color-mix(in srgb, var(--color-accent-500) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+    .reveal-fast {
+      animation: reveal-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 28%;
+    }
+  }
+  .cta-pulse {
+    animation: cta-glow 2.8s ease-in-out infinite;
+  }
+}

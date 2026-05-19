@@ -18,10 +18,10 @@ export default function ReviewsSlider() {
   return (
     <section className="section-pad bg-primary-900 text-white">
       <div className="max-w-3xl mx-auto px-6 text-center">
-        <p className="text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3">
+        <p className="reveal text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3">
           Testimonials
         </p>
-        <h2 className="font-display font-black text-4xl md:text-5xl mb-14">
+        <h2 className="reveal font-display font-black text-4xl md:text-5xl mb-14">
           What Customers Say
         </h2>
         <div className="relative min-h-[180px]">

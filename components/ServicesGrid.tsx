@@ -37,7 +37,7 @@ export default function ServicesGrid() {
   return (
     <section className="section-pad bg-cream-dark">
       <div className="max-w-5xl mx-auto px-6">
-        <div className="text-center mb-14">
+        <div className="reveal text-center mb-14">
           <p className="text-accent-600 font-semibold text-sm uppercase tracking-widest mb-3">
             What We Do
           </p>
@@ -51,7 +51,7 @@ export default function ServicesGrid() {
             return (
               <div
                 key={s.name}
-                className="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-primary-100"
+                className="reveal card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-primary-100"
               >
                 <div
                   className="relative h-48 overflow-hidden"

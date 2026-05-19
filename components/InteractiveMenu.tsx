@@ -20,7 +20,7 @@ export default function InteractiveMenu() {
   return (
     <section className="section-pad bg-primary-950">
       <div className="max-w-5xl mx-auto px-6">
-        <div className="text-center mb-12">
+        <div className="reveal text-center mb-12">
           <p
             data-demo-edit="menu-label"
             className="text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3"
