@@ -27,10 +27,16 @@ export default function BeforeAfterGallery() {
     <section className="section-pad bg-primary-950">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-10">
-          <p className="text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3">
+          <p
+            data-demo-edit="gallery-label"
+            className="text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3"
+          >
             Our Work
           </p>
-          <h2 className="font-display font-black text-4xl md:text-5xl text-white">
+          <h2
+            data-demo-edit="gallery-title"
+            className="font-display font-black text-4xl md:text-5xl text-white"
+          >
             The Difference We Make
           </h2>
           <p className="text-white/40 text-sm mt-3">Drag to compare</p>
@@ -51,6 +57,7 @@ export default function BeforeAfterGallery() {
           <img
             src={galleryData.afterUrl}
             alt="After"
+            data-gallery-sync="gallery-after"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
           />
           <span className="absolute bottom-4 right-4 z-10 bg-black/70 backdrop-blur-sm text-accent-400 text-xs font-bold px-3 py-1.5 rounded-lg border border-accent-400/30">
@@ -61,6 +68,7 @@ export default function BeforeAfterGallery() {
           <img
             src={galleryData.beforeUrl}
             alt="Before"
+            data-gallery-sync="gallery-before"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
             style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
           />
@@ -86,6 +94,42 @@ export default function BeforeAfterGallery() {
             style={{ left: `${sliderPos}%` }}
           >
             ↔
+          </div>
+        </div>
+
+        {/* Demo-mode only: thumbnail swap targets shown via [data-demo] CSS rule */}
+        <div
+          data-demo-gallery-swatches
+          style={{ display: "none" }}
+          className="gap-3 justify-center mt-4"
+        >
+          <div
+            className="relative w-24 h-16 rounded-lg overflow-hidden cursor-pointer"
+            data-demo-img="gallery-before"
+            data-demo-img-label="Before photo"
+          >
+            <img
+              src={galleryData.beforeUrl}
+              alt="Before"
+              className="w-full h-full object-cover"
+            />
+            <span className="absolute bottom-1 left-1 bg-black/60 text-white/80 text-[9px] font-bold px-1.5 py-0.5 rounded pointer-events-none">
+              BEFORE
+            </span>
+          </div>
+          <div
+            className="relative w-24 h-16 rounded-lg overflow-hidden cursor-pointer"
+            data-demo-img="gallery-after"
+            data-demo-img-label="After photo"
+          >
+            <img
+              src={galleryData.afterUrl}
+              alt="After"
+              className="w-full h-full object-cover"
+            />
+            <span className="absolute bottom-1 right-1 bg-black/60 text-accent-400 text-[9px] font-bold px-1.5 py-0.5 rounded pointer-events-none">
+              AFTER
+            </span>
           </div>
         </div>
       </div>

@@ -281,6 +281,13 @@ function swapImage(key: string, src: string) {
       img.srcset = "";
       img.sizes = "";
     });
+  document
+    .querySelectorAll<HTMLImageElement>(`[data-gallery-sync="${key}"]`)
+    .forEach((img) => {
+      img.src = src;
+      img.srcset = "";
+      img.sizes = "";
+    });
 }
 
 function applyImages(images: Record<string, string>) {
@@ -326,7 +333,10 @@ export default function DemoEditor() {
   const blurRefs = useRef<Map<string, () => void>>(new Map());
 
   useEffect(() => {
-    if (searchParams.get("dm") === TOKEN) setActive(true);
+    if (searchParams.get("dm") === TOKEN) {
+      setActive(true);
+      document.body.setAttribute("data-demo", "true");
+    }
   }, [searchParams]);
 
   useEffect(() => {
@@ -777,6 +787,7 @@ export default function DemoEditor() {
         @keyframes demo-spin { to { transform: rotate(360deg); } }
         .demo-modal-hint { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.35); }
         .demo-modal-error { margin-top: 10px; font-size: 12px; color: #f87171; }
+        [data-demo] [data-demo-gallery-swatches] { display: flex !important; }
       `}</style>
     </>
   );
