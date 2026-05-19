@@ -1,7 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import staticConfig from "@/site.config";
+
+type MenuItem = {
+  name: string;
+  price: string;
+  description: string;
+  category: string;
+  tag?: string;
+};
 
 export default function InteractiveMenu() {
   const menuData = staticConfig.widgets?.interactiveMenu;
@@ -10,15 +18,42 @@ export default function InteractiveMenu() {
   const [activeCategory, setActiveCategory] = useState(
     menuData?.categories[0] ?? "",
   );
+  const [demoItems, setDemoItems] = useState<MenuItem[] | null>(null);
+
+  useEffect(() => {
+    // Pick up items pre-set by DemoEditor before this component mounted
+    const pre = (window as any).__DEMO_MENU_ITEMS__;
+    if (Array.isArray(pre) && pre.length > 0) {
+      setDemoItems(pre);
+      setActiveCategory(pre[0].category);
+    }
+
+    const handler = (e: Event) => {
+      const items = (e as CustomEvent<MenuItem[]>).detail;
+      if (Array.isArray(items) && items.length > 0) {
+        setDemoItems(items);
+        setActiveCategory(items[0].category);
+      } else {
+        setDemoItems(null);
+      }
+    };
+    window.addEventListener("demo:menu-update", handler);
+    return () => window.removeEventListener("demo:menu-update", handler);
+  }, []);
 
   if (!menuData?.enabled) return null;
 
-  const visibleItems = menuData.items.filter(
+  const effectiveItems = demoItems ?? menuData.items;
+  const effectiveCategories = demoItems
+    ? [...new Set(demoItems.map((i) => i.category))].filter(Boolean)
+    : menuData.categories;
+
+  const visibleItems = effectiveItems.filter(
     (item) => item.category === activeCategory,
   );
 
   return (
-    <section className="section-pad bg-primary-950">
+    <section data-demo-section="menu" className="section-pad bg-primary-950">
       <div className="max-w-5xl mx-auto px-6">
         <div className="reveal text-center mb-12">
           <p
@@ -37,7 +72,7 @@ export default function InteractiveMenu() {
 
         {/* Category tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-10 bg-white/5 p-1.5 rounded-full max-w-2xl mx-auto">
-          {menuData.categories.map((cat) => (
+          {effectiveCategories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -52,7 +87,7 @@ export default function InteractiveMenu() {
           ))}
         </div>
 
-        {/* Items — filtered, no hidden/absolute tricks */}
+        {/* Items */}
         <div className="grid md:grid-cols-2 gap-4">
           {visibleItems.map((item) => (
             <div

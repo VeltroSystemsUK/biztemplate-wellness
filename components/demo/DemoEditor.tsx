@@ -10,7 +10,9 @@ import {
   Camera,
   X,
   Wand2,
+  Layers,
 } from "lucide-react";
+import config from "@/site.config";
 
 const TOKEN = process.env.NEXT_PUBLIC_DEMO_TOKEN ?? "veltrodemo";
 const STORAGE_KEY = "veltro-wellness-demo-v1";
@@ -219,18 +221,28 @@ const FONTS = [
   },
 ];
 
+type DemoMenuItem = {
+  name: string;
+  price: string;
+  description: string;
+  category: string;
+  tag?: string;
+};
+
 type Saved = {
-  themeId: string;
-  fontId: string;
-  texts: Record<string, string>;
-  images: Record<string, string>;
+  themeId?: string;
+  fontId?: string;
+  texts?: Record<string, string>;
+  images?: Record<string, string>;
+  hiddenSections?: string[];
+  menuItems?: DemoMenuItem[];
 };
 
 function load(): Saved {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}");
   } catch {
-    return {} as Saved;
+    return {};
   }
 }
 
@@ -312,12 +324,18 @@ async function blobToDataUrl(blob: Blob): Promise<string> {
   });
 }
 
+function broadcastMenuItems(items: DemoMenuItem[]) {
+  (window as any).__DEMO_MENU_ITEMS__ = items;
+  window.dispatchEvent(new CustomEvent("demo:menu-update", { detail: items }));
+}
+
 export default function DemoEditor() {
   const searchParams = useSearchParams();
   const [active, setActive] = useState(false);
   const [panel, setPanel] = useState<"theme" | "font" | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [imgMode, setImgMode] = useState(false);
+  const [widgetPanel, setWidgetPanel] = useState(false);
   const [themeId, setThemeId] = useState("indigo");
   const [fontId, setFontId] = useState("classic");
 
@@ -328,6 +346,20 @@ export default function DemoEditor() {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
+
+  // Widget state
+  const [hiddenSections, setHiddenSections] = useState<string[]>([]);
+  const [menuItems, setMenuItems] = useState<DemoMenuItem[]>([]);
+  const [editingItemIdx, setEditingItemIdx] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState<Partial<DemoMenuItem>>({});
+  const [addingItem, setAddingItem] = useState(false);
+  const [newItemForm, setNewItemForm] = useState<DemoMenuItem>({
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    tag: "",
+  });
 
   const fileRef = useRef<HTMLInputElement>(null);
   const blurRefs = useRef<Map<string, () => void>>(new Map());
@@ -352,6 +384,30 @@ export default function DemoEditor() {
     }
     if (s.texts) applyTexts(s.texts);
     if (s.images) applyImages(s.images);
+
+    // Hidden sections
+    const savedHidden = s.hiddenSections ?? [];
+    setHiddenSections(savedHidden);
+    savedHidden.forEach((key) => {
+      const el = document.querySelector<HTMLElement>(
+        `[data-demo-section="${key}"]`,
+      );
+      if (el) el.style.display = "none";
+    });
+
+    // Menu items — use saved override if present, else seed from config
+    const configItems: DemoMenuItem[] = (
+      config.widgets?.interactiveMenu?.items ?? []
+    ).map((item) => ({
+      name: item.name,
+      price: item.price,
+      description: item.description,
+      category: item.category,
+      tag: item.tag,
+    }));
+    const effectiveItems = s.menuItems ?? configItems;
+    setMenuItems(effectiveItems);
+    if (s.menuItems) broadcastMenuItems(s.menuItems);
   }, [active]);
 
   useEffect(() => {
@@ -465,6 +521,68 @@ export default function DemoEditor() {
     } finally {
       setAiLoading(false);
     }
+  }
+
+  // Widget helpers
+  function toggleSection(key: string) {
+    const el = document.querySelector<HTMLElement>(
+      `[data-demo-section="${key}"]`,
+    );
+    const isHidden = hiddenSections.includes(key);
+    const next = isHidden
+      ? hiddenSections.filter((k) => k !== key)
+      : [...hiddenSections, key];
+    if (el) el.style.display = isHidden ? "" : "none";
+    setHiddenSections(next);
+    save({ hiddenSections: next });
+  }
+
+  function saveAndBroadcast(items: DemoMenuItem[]) {
+    setMenuItems(items);
+    save({ menuItems: items });
+    broadcastMenuItems(items);
+  }
+
+  function removeMenuItem(i: number) {
+    const next = menuItems.filter((_, idx) => idx !== i);
+    saveAndBroadcast(next);
+    if (editingItemIdx === i) setEditingItemIdx(null);
+  }
+
+  function commitEditItem() {
+    if (editingItemIdx === null) return;
+    const next = menuItems.map((item, i) =>
+      i === editingItemIdx ? ({ ...item, ...editForm } as DemoMenuItem) : item,
+    );
+    saveAndBroadcast(next);
+    setEditingItemIdx(null);
+  }
+
+  function startAddItem() {
+    const cats = [...new Set(menuItems.map((i) => i.category))].filter(Boolean);
+    setNewItemForm({
+      name: "",
+      price: "",
+      description: "",
+      category: cats[0] ?? "",
+      tag: "",
+    });
+    setAddingItem(true);
+    setEditingItemIdx(null);
+  }
+
+  function commitNewItem() {
+    if (!newItemForm.name.trim()) return;
+    const next = [...menuItems, { ...newItemForm }];
+    saveAndBroadcast(next);
+    setAddingItem(false);
+    setNewItemForm({
+      name: "",
+      price: "",
+      description: "",
+      category: newItemForm.category,
+      tag: "",
+    });
   }
 
   if (!active) return null;
@@ -590,7 +708,176 @@ export default function DemoEditor() {
         </div>
       )}
 
-      <div className="demo-toolbar" onClick={() => setPanel(null)}>
+      {widgetPanel && (
+        <div className="demo-panel demo-widget-panel">
+          <p className="demo-panel-label">Sections</p>
+          <div className="demo-section-list">
+            {[
+              { key: "menu", label: "Services Menu" },
+              { key: "gallery", label: "Before/After Gallery" },
+            ].map(({ key, label }) => (
+              <div key={key} className="demo-section-row">
+                <span className="demo-section-name">{label}</span>
+                <button
+                  className={`demo-vis-btn ${hiddenSections.includes(key) ? "demo-vis-off" : "demo-vis-on"}`}
+                  onClick={() => toggleSection(key)}
+                >
+                  {hiddenSections.includes(key) ? "Hidden" : "Visible"}
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {config.widgets?.interactiveMenu?.enabled && (
+            <>
+              <div className="demo-widget-subheader">
+                <p className="demo-panel-label" style={{ margin: 0 }}>
+                  Menu items
+                </p>
+                {!addingItem && (
+                  <button className="demo-add-item-btn" onClick={startAddItem}>
+                    + Add
+                  </button>
+                )}
+              </div>
+              <div className="demo-item-list">
+                {menuItems.map((item, i) =>
+                  editingItemIdx === i ? (
+                    <div key={i} className="demo-item-edit-card">
+                      {(
+                        [
+                          "name",
+                          "price",
+                          "category",
+                          "description",
+                          "tag",
+                        ] as const
+                      ).map((field) => (
+                        <div key={field} className="demo-field-row">
+                          <label className="demo-field-label">{field}</label>
+                          <input
+                            className="demo-field-input"
+                            value={(editForm[field] as string) ?? ""}
+                            onChange={(e) =>
+                              setEditForm((f) => ({
+                                ...f,
+                                [field]: e.target.value,
+                              }))
+                            }
+                            onKeyDown={(e) =>
+                              e.key === "Enter" && commitEditItem()
+                            }
+                          />
+                        </div>
+                      ))}
+                      <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                        <button
+                          className="demo-commit-btn"
+                          onClick={commitEditItem}
+                        >
+                          Save
+                        </button>
+                        <button
+                          className="demo-cancel-btn"
+                          onClick={() => setEditingItemIdx(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div key={i} className="demo-item-card">
+                      <div className="demo-item-info">
+                        <span className="demo-item-name">{item.name}</span>
+                        <span className="demo-item-sub">
+                          {item.price} · {item.category}
+                        </span>
+                      </div>
+                      <div className="demo-item-actions">
+                        <button
+                          className="demo-item-btn"
+                          title="Edit"
+                          onClick={() => {
+                            setEditingItemIdx(i);
+                            setEditForm({ ...item });
+                            setAddingItem(false);
+                          }}
+                        >
+                          ✏
+                        </button>
+                        <button
+                          className="demo-item-btn demo-item-del"
+                          title="Delete"
+                          onClick={() => removeMenuItem(i)}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
+                  ),
+                )}
+
+                {addingItem && (
+                  <div className="demo-item-edit-card">
+                    <p className="demo-field-heading">New item</p>
+                    {(
+                      [
+                        "name",
+                        "price",
+                        "category",
+                        "description",
+                        "tag",
+                      ] as const
+                    ).map((field) => (
+                      <div key={field} className="demo-field-row">
+                        <label className="demo-field-label">{field}</label>
+                        <input
+                          className="demo-field-input"
+                          value={(newItemForm[field] as string) ?? ""}
+                          onChange={(e) =>
+                            setNewItemForm((f) => ({
+                              ...f,
+                              [field]: e.target.value,
+                            }))
+                          }
+                          onKeyDown={(e) =>
+                            e.key === "Enter" && commitNewItem()
+                          }
+                          // eslint-disable-next-line jsx-a11y/no-autofocus
+                          autoFocus={field === "name"}
+                        />
+                      </div>
+                    ))}
+                    <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                      <button
+                        className="demo-commit-btn"
+                        onClick={commitNewItem}
+                        disabled={!newItemForm.name.trim()}
+                      >
+                        Add
+                      </button>
+                      <button
+                        className="demo-cancel-btn"
+                        onClick={() => setAddingItem(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      <div
+        className="demo-toolbar"
+        onClick={() => {
+          setPanel(null);
+          setWidgetPanel(false);
+        }}
+      >
         <span className="demo-badge">● Demo</span>
 
         <button
@@ -598,6 +885,7 @@ export default function DemoEditor() {
           onClick={(e) => {
             e.stopPropagation();
             setPanel(panel === "theme" ? null : "theme");
+            setWidgetPanel(false);
           }}
         >
           <Palette className="demo-icon" />
@@ -609,6 +897,7 @@ export default function DemoEditor() {
           onClick={(e) => {
             e.stopPropagation();
             setPanel(panel === "font" ? null : "font");
+            setWidgetPanel(false);
           }}
         >
           <Type className="demo-icon" />
@@ -622,6 +911,7 @@ export default function DemoEditor() {
             setEditMode((v) => !v);
             if (imgMode) setImgMode(false);
             setPanel(null);
+            setWidgetPanel(false);
           }}
         >
           <Pencil className="demo-icon" />
@@ -635,6 +925,7 @@ export default function DemoEditor() {
             setImgMode((v) => !v);
             if (editMode) setEditMode(false);
             setPanel(null);
+            setWidgetPanel(false);
           }}
         >
           <Camera className="demo-icon" />
@@ -642,10 +933,25 @@ export default function DemoEditor() {
         </button>
 
         <button
+          className={`demo-btn${widgetPanel ? " demo-btn-active" : ""}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setWidgetPanel((v) => !v);
+            setPanel(null);
+            if (editMode) setEditMode(false);
+            if (imgMode) setImgMode(false);
+          }}
+        >
+          <Layers className="demo-icon" />
+          Widgets
+        </button>
+
+        <button
           className="demo-btn demo-btn-reset"
           onClick={(e) => {
             e.stopPropagation();
             localStorage.removeItem(STORAGE_KEY);
+            (window as any).__DEMO_MENU_ITEMS__ = undefined;
             window.location.reload();
           }}
         >
@@ -788,6 +1094,38 @@ export default function DemoEditor() {
         .demo-modal-hint { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.35); }
         .demo-modal-error { margin-top: 10px; font-size: 12px; color: #f87171; }
         [data-demo] [data-demo-gallery-swatches] { display: flex !important; }
+
+        /* Widget panel */
+        .demo-widget-panel { width: 320px; max-height: 500px; overflow-y: auto; }
+        .demo-section-list { display: flex; flex-direction: column; gap: 2px; }
+        .demo-section-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; }
+        .demo-section-name { font-size: 12px; color: rgba(255,255,255,0.7); }
+        .demo-vis-btn { padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid; transition: all 0.15s; }
+        .demo-vis-on { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.35); color: #6ee7b7; }
+        .demo-vis-off { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.25); color: rgba(239,68,68,0.65); }
+        .demo-widget-subheader { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; margin-bottom: 8px; }
+        .demo-add-item-btn { padding: 3px 9px; border-radius: 4px; border: 1px solid rgba(99,102,241,0.4); background: rgba(99,102,241,0.12); color: rgba(99,102,241,0.85); font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+        .demo-add-item-btn:hover { background: rgba(99,102,241,0.22); color: white; }
+        .demo-item-list { display: flex; flex-direction: column; gap: 4px; }
+        .demo-item-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 8px 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 7px; }
+        .demo-item-info { flex: 1; min-width: 0; }
+        .demo-item-name { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.82); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .demo-item-sub { display: block; font-size: 10px; color: rgba(255,255,255,0.32); margin-top: 2px; }
+        .demo-item-actions { display: flex; gap: 3px; flex-shrink: 0; }
+        .demo-item-btn { padding: 3px 7px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.45); font-size: 11px; cursor: pointer; transition: all 0.15s; }
+        .demo-item-btn:hover { background: rgba(255,255,255,0.10); color: white; }
+        .demo-item-del:hover { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); color: #f87171; }
+        .demo-item-edit-card { padding: 10px; background: rgba(99,102,241,0.07); border: 1px solid rgba(99,102,241,0.18); border-radius: 7px; }
+        .demo-field-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(99,102,241,0.65); margin: 0 0 8px; }
+        .demo-field-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+        .demo-field-label { width: 72px; font-size: 10px; color: rgba(255,255,255,0.38); text-transform: capitalize; flex-shrink: 0; }
+        .demo-field-input { flex: 1; padding: 5px 8px; border-radius: 5px; background: rgb(25,33,47); border: 1px solid rgb(45,57,75); color: white; font-size: 12px; outline: none; min-width: 0; }
+        .demo-field-input:focus { border-color: rgb(99,102,241); }
+        .demo-commit-btn { padding: 5px 12px; border-radius: 5px; background: rgb(99,102,241); border: none; color: white; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+        .demo-commit-btn:hover:not(:disabled) { background: rgb(79,82,221); }
+        .demo-commit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .demo-cancel-btn { padding: 5px 12px; border-radius: 5px; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.45); font-size: 12px; cursor: pointer; transition: all 0.15s; }
+        .demo-cancel-btn:hover { background: rgba(255,255,255,0.05); color: white; }
       `}</style>
     </>
   );

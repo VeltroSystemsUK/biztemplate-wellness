@@ -24,7 +24,7 @@ export default function BeforeAfterGallery() {
   };
 
   return (
-    <section className="section-pad bg-primary-950">
+    <section data-demo-section="gallery" className="section-pad bg-primary-950">
       <div className="max-w-4xl mx-auto px-6">
         <div className="reveal text-center mb-10">
           <p
