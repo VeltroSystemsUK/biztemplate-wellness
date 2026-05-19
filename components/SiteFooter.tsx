@@ -19,7 +19,10 @@ export default function SiteFooter() {
                 {brand.name}
               </h3>
             )}
-            <p className="text-white/50 text-sm leading-relaxed max-w-xs">
+            <p
+              data-demo-edit="footer-tagline"
+              className="text-white/50 text-sm leading-relaxed max-w-xs"
+            >
               {brand.tagline}
             </p>
           </div>
@@ -29,22 +32,22 @@ export default function SiteFooter() {
               className="flex items-center gap-3 text-white/80 hover:text-white transition-colors"
             >
               <Phone className="w-4 h-4 text-accent-400 shrink-0" />
-              <span>{brand.phone}</span>
+              <span data-demo-edit="footer-phone">{brand.phone}</span>
             </a>
             <a
               href={`mailto:${brand.email}`}
               className="flex items-center gap-3 text-white/80 hover:text-white transition-colors"
             >
               <Mail className="w-4 h-4 text-accent-400 shrink-0" />
-              <span>{brand.email}</span>
+              <span data-demo-edit="footer-email">{brand.email}</span>
             </a>
             <div className="flex items-start gap-3 text-white/80">
               <MapPin className="w-4 h-4 text-accent-400 shrink-0 mt-0.5" />
-              <span>{brand.address}</span>
+              <span data-demo-edit="footer-address">{brand.address}</span>
             </div>
             <div className="flex items-center gap-3 text-white/80">
               <Clock className="w-4 h-4 text-accent-400 shrink-0" />
-              <span>{brand.hours}</span>
+              <span data-demo-edit="footer-hours">{brand.hours}</span>
             </div>
           </div>
         </div>

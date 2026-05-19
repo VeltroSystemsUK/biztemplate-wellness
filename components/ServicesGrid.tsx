@@ -46,14 +46,18 @@ export default function ServicesGrid() {
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((s) => {
+          {services.map((s, i) => {
             const Icon = ICON_MAP[s.icon] ?? Wrench;
             return (
               <div
                 key={s.name}
                 className="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-primary-100"
               >
-                <div className="relative h-48 overflow-hidden">
+                <div
+                  className="relative h-48 overflow-hidden"
+                  data-demo-img={`service-${i}`}
+                  data-demo-img-label={s.name}
+                >
                   <img
                     src={s.imageUrl}
                     alt={s.name}
@@ -67,10 +71,16 @@ export default function ServicesGrid() {
                   </div>
                 </div>
                 <div className="p-5">
-                  <h3 className="font-display font-bold text-lg text-primary-900 mb-2">
+                  <h3
+                    data-demo-edit={`service-${i}-name`}
+                    className="font-display font-bold text-lg text-primary-900 mb-2"
+                  >
                     {s.name}
                   </h3>
-                  <p className="text-primary-700/80 text-sm leading-relaxed">
+                  <p
+                    data-demo-edit={`service-${i}-desc`}
+                    className="text-primary-700/80 text-sm leading-relaxed"
+                  >
                     {s.description}
                   </p>
                 </div>
